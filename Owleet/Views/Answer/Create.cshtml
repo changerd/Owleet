@@ -1,13 +1,14 @@
-﻿@model Owleet.Models.Question
+﻿@model Owleet.Models.Answer
 
 @{
     Layout = null;
+    string action = ViewContext.RouteData.Values["Action"].ToString();
 }
 <div id="modal-container" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Добавить вопрос</h5>
+                <h5 class="modal-title">">@Html.Raw(action == "Create" ? "Добавить" : "Изменить") ответ</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -16,19 +17,13 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
-                            <form asp-action="AddQuestion" id="form">
-                                <div class="form-group">
-                                    <label asp-for="Text" class="col-form-label"></label>
-                                    <input asp-for="Text" class="form-control"/>
-                                    <span asp-validation-for="Text" class="text-danger"></span>
-                                </div>
-                            </form>
+                            @await Html.PartialAsync("_Input", Model)
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button form="form" type="button" data-save="modal" class="btn btn-dark">Добавить</button>
+                <button form="form" type="button" data-save="modal" class="btn btn-dark">@Html.Raw(action == "Create" ? "Добавить" : "Изменить")</button>
             </div>
         </div>
     </div>

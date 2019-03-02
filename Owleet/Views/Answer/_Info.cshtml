@@ -1,0 +1,14 @@
+﻿@model Owleet.Models.Answer
+@{
+    Layout = null;
+}
+<div class="container-fluid">
+    <div class="row my-1">
+        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.Text)</span>
+        <span class="col-md-8">@Html.DisplayFor(model => model.Text)</span>
+    </div>
+    <div class="row my-1">
+        <span class="col-md-4 font-weight-bold">@Html.DisplayNameFor(model => model.IsTrue)</span>
+        <span class="col-md-8">@Html.DisplayFor(model => model.IsTrue)</span>
+    </div>
+</div>

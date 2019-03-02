@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Owleet.Models
 {
-    public class Tournament
+    public class Tournament : IEntity
     {
         public Tournament()
         {
