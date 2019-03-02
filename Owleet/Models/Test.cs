@@ -18,6 +18,7 @@ namespace Owleet.Models
         public virtual ICollection<Question> Questions { get; set; }
         public Test()
         {
+            Id = Guid.NewGuid();
             Questions = new HashSet<Question>();
         }
     }

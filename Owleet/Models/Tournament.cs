@@ -7,6 +7,10 @@ namespace Owleet.Models
 {
     public class Tournament
     {
+        public Tournament()
+        {
+            Id = Guid.NewGuid();
+        }
         public Guid Id { get; set; }
         public int Prize { get; set; }
         public DateTime DateStart { get; set; }
