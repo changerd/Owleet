@@ -13,10 +13,9 @@ namespace Owleet.Models
         public Guid QuestionId { get; set; }
         public Question Question { get; set; }
         public virtual ICollection<UserAnswer> UserAnswers { get; set; }
-        public Answer(Guid questionId)
+        public Answer()
         {
             Id = Guid.NewGuid();
-            QuestionId = questionId;
             UserAnswers = new HashSet<UserAnswer>();
         }
     }

@@ -5,7 +5,7 @@
     @foreach (var question in Model.Questions)
     {
         <div>@Html.DisplayFor(modelItem => question.Test)</div>
-        <a href="#" class="btn btn-primary" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {controller = "Answer", action = "Create"})">Добавить ответ</a>                                                
+        <a href="#" class="btn btn-primary" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {controller = "Answer", action = "Create", questionId = question.Id})">Добавить ответ</a>                                                
         foreach (var answer in question.Answers)
         {
             <div>@Html.DisplayFor(modelItem => answer.Text)</div>

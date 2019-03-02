@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Owleet.Models
 {
@@ -12,10 +10,9 @@ namespace Owleet.Models
         public Guid TestId { get; set; }
         public Test Test { get; set; }
         public virtual ICollection<Answer> Answers { get; set; }
-        public Question(Guid testId)
+        public Question()
         {
             Id = Guid.NewGuid();
-            TestId = testId;
             Answers = new HashSet<Answer>();
         }
     }

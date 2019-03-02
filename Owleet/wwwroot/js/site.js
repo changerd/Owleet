@@ -18,24 +18,19 @@
             var actionUrl = form.attr('action');
             var dataToSend = form.serialize();
             $.post(actionUrl, dataToSend).done(function(data) {
-
+                
                 var newBody = $('.modal-body', data);
-                if (! button.hasAttribute('data-delete')) {
-                    var isValid = newBody.find('[name="IsValid"]').val() == 'True';
-                } else {
-                    var isValid = newBody.find('[name="IdErrorMessage"]').text() == '';
-                }
+                var isValid = newBody.find('[name="IsValid"]').val() == 'True';
 
                 placeholderElement.find('.modal-body').replaceWith(newBody);
 
                 // find IsValid input field and check it's value
                 // if it's valid then hide modal window        
                 if (isValid) {
-                    var tableElement = $('#main-table');
-                    var tableUrl = tableElement.data('url');
-                    AjaxCall(tableUrl).done(function(data) {
-                        var options = table.options;
-                        $('#partialTable').html(data);
+                    var partial = $('.partial');
+                    var partialUrl = partial.data('url');
+                    AjaxCall(partialUrl).done(function(data) {                        
+                        //$('#partialTable').html(data);
                         placeholderElement.find('.modal').modal('hide');
                     });
                 }
