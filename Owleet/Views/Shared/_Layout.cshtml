@@ -21,37 +21,28 @@
     </environment>
 
     <link rel="stylesheet" href="~/css/style.css"/>
+    
 </head>
 <body>
-<header>
-    <div class="header-bottom sticky-bar clearfix">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-2 col-md-5 col-5 ">
-                    <div class="logo">
-                        <a href="#">
-                            <img alt="" src="~/IMG/logo.png">
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-10 col-md-6 col-8">
-                    <div class="menu-cart-wrap">
-                        <div class="main-menu">
-                            <nav>
-                                <ul>
-                                   
-                                    <li><a href="#">Start test</a></li>
-                                    <li><a href="#">Create test</a></li> 
-                                    <partial name="_LoginPartial" />
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>        
-</header>
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+  <a class="navbar-brand" href="#"><img alt="" src="~/IMG/logo.png"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      
+    </ul>
+   
+        <a class="nav-link" href="#">Start test</a>
+        <a class="nav-link" href="#">Create test</a> 
+        <partial name="_LoginPartial" />
+    
+  </div>
+</nav>
+
+    
     <div class="container-fluid">
         <partial name="_CookieConsentPartial" />
         <main role="main" class="pb-3">
