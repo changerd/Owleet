@@ -1356,6 +1356,7 @@ textarea:focus {
         display: none; }
 
 .logo {
+  margin-left: auto;
   margin-top: 31px; }
   @media only screen and (min-width: 768px) and (max-width: 991px) {
     .logo {
@@ -3011,7 +3012,7 @@ textarea:focus {
     width: 100%;
     height: 779px;
     content: "";
-    background-image: url(../img/bg/bg-5.jpg); }
+    background-image: url(../img/bg-1.jpg); }
 
 .course-slider-active-2.nav-style-1.owl-carousel > .owl-nav div {
   top: 228px; }
