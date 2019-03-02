@@ -12,10 +12,10 @@ namespace Owleet.Models
         public bool IsTrue { get; set; }
         public Guid QuestionId { get; set; }
         public Question Question { get; set; }
-        //public virtual ICollection<ApplicationUser> Users { get; set; }
+        public virtual ICollection<UserAnswer> UserAnswers { get; set; }
         public Answer()
         {
-            //Users = new HashSet<ApplicationUser>();
+            UserAnswers = new HashSet<UserAnswer>();
         }
     }
 }
