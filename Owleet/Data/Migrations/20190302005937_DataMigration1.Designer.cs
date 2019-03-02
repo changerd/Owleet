@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Owleet.Models;
 
 namespace Owleet.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190302005937_DataMigration1")]
+    partial class DataMigration1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -272,19 +274,6 @@ namespace Owleet.Data.Migrations
                     b.ToTable("Tournaments");
                 });
 
-            modelBuilder.Entity("Owleet.Models.UserAnswer", b =>
-                {
-                    b.Property<string>("UserId");
-
-                    b.Property<Guid>("AnswerId");
-
-                    b.HasKey("UserId", "AnswerId");
-
-                    b.HasIndex("AnswerId");
-
-                    b.ToTable("UserAnswer");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -358,19 +347,6 @@ namespace Owleet.Data.Migrations
                     b.HasOne("Owleet.Models.ApplicationUser", "User")
                         .WithMany("Tournaments")
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Owleet.Models.UserAnswer", b =>
-                {
-                    b.HasOne("Owleet.Models.Answer", "Answer")
-                        .WithMany()
-                        .HasForeignKey("AnswerId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Owleet.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
