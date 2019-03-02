@@ -48,7 +48,7 @@ namespace Owleet.Models
         */
         public async Task<List<Test>> GetPassedTestsByUserId(Guid id)
         {
-            var user = await _context.Users.Include(x => x.Answers).ThenInclude(x => x.Question).ThenInclude(x => x.Test)
+            var user = await _context.Users.Include(x => x.UserAnswers).ThenInclude(x => x.Answer).ThenInclude(x => x.Question).ThenInclude(x => x.Test)
                 .SingleOrDefaultAsync(x => x.Id == id.ToString());
             return user.Tests.ToList();
         }
