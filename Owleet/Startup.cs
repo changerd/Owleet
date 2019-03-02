@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Owleet.Filters;
 using Owleet.Models;
 
 namespace Owleet
@@ -47,8 +48,29 @@ namespace Owleet
             })
                 //.AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            
+            // Регистрация фильтров проверки существования записей
+            services.AddScoped<ValidateEntityExistsAttribute<Test>>();
+            services.AddScoped<ValidateEntityExistsAttribute<Question>>();
+            services.AddScoped<ValidateEntityExistsAttribute<Answer>>();
+            services.AddScoped<ValidateEntityExistsAttribute<Tournament>>();
+            
+            services.AddMvc(options => { 
+                    // Регистрация фильтра валидации модели
+                    options.Filters.Add(typeof(ValidateModelAttribute));
+                    // Изменение сообщений об ошибках валидации
+                    options.ModelBindingMessageProvider.SetValueIsInvalidAccessor(val => $"Значение '{val}' недопустимо.");
+                    options.ModelBindingMessageProvider.SetMissingBindRequiredValueAccessor(val => $"Значение для свойства '{val}' не было предоставлено.");
+                    options.ModelBindingMessageProvider.SetMissingKeyOrValueAccessor(() => "Значение обязательное.");
+                    options.ModelBindingMessageProvider.SetMissingRequestBodyRequiredValueAccessor(() => "Требуется непустое тело запроса.");
+                    options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(val => $"Значение '{val}' недопустимо.");
+                    options.ModelBindingMessageProvider.SetAttemptedValueIsInvalidAccessor((v,p) => $"Значение '{v}' недопустимо для {p}.");
+                    options.ModelBindingMessageProvider.SetNonPropertyAttemptedValueIsInvalidAccessor(val => $"Значение '{val}' недопустимо.");
+                    options.ModelBindingMessageProvider.SetUnknownValueIsInvalidAccessor(val => $"Предоставленное значение недопустимо для {val}.");
+                    options.ModelBindingMessageProvider.SetNonPropertyUnknownValueIsInvalidAccessor(() => "Предоставленное значение недействительно.");
+                    options.ModelBindingMessageProvider.SetValueMustBeANumberAccessor(val => $"Поле {val} должно быть числом.");
+                    options.ModelBindingMessageProvider.SetNonPropertyValueMustBeANumberAccessor(() => "Поле должно быть числом.");
+                }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

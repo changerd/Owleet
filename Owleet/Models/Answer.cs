@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Owleet.Models
 {
-    public class Answer
+    public class Answer : IEntity
     {
         public Guid Id { get; set; }
         public string Text { get; set; }
@@ -13,9 +13,10 @@ namespace Owleet.Models
         public Guid QuestionId { get; set; }
         public Question Question { get; set; }
         public virtual ICollection<UserAnswer> UserAnswers { get; set; }
-        public Answer()
+        public Answer(Guid questionId)
         {
             Id = Guid.NewGuid();
+            QuestionId = questionId;
             UserAnswers = new HashSet<UserAnswer>();
         }
     }

@@ -1,21 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Owleet.Filters;
 using Owleet.Models;
+using Owleet.Models.DataRepository;
 
 namespace Owleet.Controllers
 {
+    [Authorize]
     public class TestController : Controller
     {
-        //private readonly ApplicationDbContext _context;
-        private readonly DataRepository db;
-        public TestController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ITestDataRepository db;
+        private async Task<ApplicationUser> GetCurrentUserAsync() => await _userManager.GetUserAsync(HttpContext.User);
+        public TestController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
-            db = new DataRepository(context);
+            db = new TestDataRepository(context);
+            _userManager = userManager;
         }
 
         // GET: Test
@@ -27,127 +31,52 @@ namespace Owleet.Controllers
         // GET: Test/Create
         public IActionResult Create()
         {
-            //ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
-        public IActionResult AddQuestion()
-        {
-            return PartialView("Create");
-        }
-        
         [HttpPost]
+        [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddQuestion([Bind("Id, Text")] Question question)
+        public async Task<IActionResult> Create([Bind("Id,Name,Rating,IsTimeLimit,IsPrivate,ErrorCount")] Test test)
         {
-            await db.AddQuestion(question);
-
-            return PartialView("AddQuestion", question);
-        }
-
-        public IActionResult AddAnswer()
-        {
-            return PartialView("AddAnswer");
-        }
-        
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddAnswer([Bind("Id, Text")] Answer answer)
-        {
-            await db.AddAnswer(answer);
-
-            return PartialView("AddAnswer", answer);
-        }
-        
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Rating,IsTimeLimit,IsPrivate,ErrorCount,UserId")] Test test)
-        {
-            if (ModelState.IsValid)
-            {
-                await db.AddTest(test);
-                return RedirectToAction(nameof(Index));
-            }
-            //ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", test.UserId);
-            return View(test);
+            
+            test.UserId = GetCurrentUserAsync().Result.Id;
+            await db.AddAsync(test);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Test/Edit/5
+        [ServiceFilter(typeof(ValidateEntityExistsAttribute<Test>))]
         public async Task<IActionResult> Edit(Guid? id)
         {
-            /*
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var test = await _context.Tests.FindAsync(id);
-            if (test == null)
-            {
-                return NotFound();
-            }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", test.UserId);
-            return View(test);
-            */
-            return View();
+            return View(await db.GetTest(id.Value));
         }
 
         // POST: Test/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [ValidateModel]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Rating,IsTimeLimit,IsPrivate,ErrorCount,UserId")] Test test)
         {
-            if (id != test.Id)
+            try
             {
-                return NotFound();
+                await db.UpdateAsync(test);
             }
-
-            if (ModelState.IsValid)
+            catch (DbUpdateConcurrencyException)
             {
-                /*
-                try
+                if (!db.ItemExists(x=>x.Id == test.Id).Result)
                 {
-                    _context.Update(test);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TestExists(test.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }*/
-                return RedirectToAction(nameof(Index));
+                throw;
             }
-            //ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", test.UserId);
-            return View(test);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Test/Delete/5
+        [ServiceFilter(typeof(ValidateEntityExistsAttribute<Test>))]
         public async Task<IActionResult> Delete(Guid? id)
         {
-            /*
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var test = await _context.Tests
-                .Include(t => t.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (test == null)
-            {
-                return NotFound();
-            }
-
-            return View(test);
-            */
-            return View();
+            return PartialView(await db.GetSingleAsync(x=>x.Id == id));
         }
 
         // POST: Test/Delete/5
@@ -155,18 +84,8 @@ namespace Owleet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            /*
-            var test = await _context.Tests.FindAsync(id);
-            _context.Tests.Remove(test);
-            await _context.SaveChangesAsync();
+            await db.RemoveAsync(await db.GetSingleAsync(x => x.Id == id));
             return RedirectToAction(nameof(Index));
-            */
-            return null;
-        }
-
-        private void TestExists(Guid id)
-        {
-            //return _context.Tests.Any(e => e.Id == id);
         }
     }
 }

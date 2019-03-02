@@ -1,0 +1,11 @@
+@model IEnumerable<Owleet.Models.Question>
+<div>
+    @foreach (var question in Model)
+    {
+        <div>@Html.DisplayFor(modelItem => question.Test)</div>
+        foreach (var answer in question.Answers)
+        {
+            <div>@Html.DisplayFor(modelItem => answer.Text)</div>
+        }
+    }
+</div>

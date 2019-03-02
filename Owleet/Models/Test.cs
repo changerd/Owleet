@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Owleet.Models
 {
-    public class Test
+    public class Test : IEntity
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

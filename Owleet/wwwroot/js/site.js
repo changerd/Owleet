@@ -36,7 +36,6 @@
                     AjaxCall(tableUrl).done(function(data) {
                         var options = table.options;
                         $('#partialTable').html(data);
-                        SetDataTable(table);
                         placeholderElement.find('.modal').modal('hide');
                     });
                 }
@@ -51,3 +50,11 @@
             $(".modal-backdrop").remove();
         });
 });
+function AjaxCall(url, data, type) {
+    return $.ajax({
+        url: url,
+        type: type ? type : 'GET',
+        data: data,
+        contentType: 'application/json'
+    });
+}
