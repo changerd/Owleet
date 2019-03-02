@@ -14,12 +14,12 @@ namespace Owleet.Models
         public int Rating { get; set; }
         public DateTime DateRegister { get; set; }
         public virtual ICollection<Test> Tests { get; set; }
-        //public virtual ICollection<Answer> Answers { get; set; }
+        public virtual ICollection<Answer> Answers { get; set; }
         public virtual ICollection<Tournament> Tournaments { get; set; }
         public ApplicationUser()
         {
             Tests = new HashSet<Test>();
-            //Answers = new HashSet<Answer>();
+            Answers = new HashSet<Answer>();
             Tournaments = new HashSet<Tournament>();
         }
     }
