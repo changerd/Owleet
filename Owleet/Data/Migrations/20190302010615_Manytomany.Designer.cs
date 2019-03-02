@@ -10,8 +10,8 @@ using Owleet.Models;
 namespace Owleet.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190301205340_DataMigration")]
-    partial class DataMigration
+    [Migration("20190302010615_Manytomany")]
+    partial class Manytomany
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -135,6 +135,24 @@ namespace Owleet.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Owleet.Models.Answer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("IsTrue");
+
+                    b.Property<Guid>("QuestionId");
+
+                    b.Property<string>("Text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("Answers");
+                });
+
             modelBuilder.Entity("Owleet.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -145,14 +163,22 @@ namespace Owleet.Data.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
+                    b.Property<DateTime>("DateRegister");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<int>("Level");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<int>("Money");
+
+                    b.Property<string>("Name");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -165,6 +191,8 @@ namespace Owleet.Data.Migrations
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
+
+                    b.Property<int>("Rating");
 
                     b.Property<string>("SecurityStamp");
 
@@ -184,6 +212,79 @@ namespace Owleet.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Owleet.Models.Question", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("TestId");
+
+                    b.Property<string>("Text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TestId");
+
+                    b.ToTable("Questions");
+                });
+
+            modelBuilder.Entity("Owleet.Models.Test", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ErrorCount");
+
+                    b.Property<bool>("IsPrivate");
+
+                    b.Property<bool>("IsTimeLimit");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("Rating");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Tests");
+                });
+
+            modelBuilder.Entity("Owleet.Models.Tournament", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("DateStart");
+
+                    b.Property<DateTime>("DateStop");
+
+                    b.Property<int>("Prize");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Tournaments");
+                });
+
+            modelBuilder.Entity("Owleet.Models.UserAnswer", b =>
+                {
+                    b.Property<string>("UserId");
+
+                    b.Property<Guid>("AnswerId");
+
+                    b.HasKey("UserId", "AnswerId");
+
+                    b.HasIndex("AnswerId");
+
+                    b.ToTable("UserAnswer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -226,6 +327,49 @@ namespace Owleet.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.HasOne("Owleet.Models.ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Owleet.Models.Answer", b =>
+                {
+                    b.HasOne("Owleet.Models.Question", "Question")
+                        .WithMany("Answers")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Owleet.Models.Question", b =>
+                {
+                    b.HasOne("Owleet.Models.Test", "Test")
+                        .WithMany("Questions")
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Owleet.Models.Test", b =>
+                {
+                    b.HasOne("Owleet.Models.ApplicationUser", "User")
+                        .WithMany("Tests")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Owleet.Models.Tournament", b =>
+                {
+                    b.HasOne("Owleet.Models.ApplicationUser", "User")
+                        .WithMany("Tournaments")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Owleet.Models.UserAnswer", b =>
+                {
+                    b.HasOne("Owleet.Models.Answer", "Answer")
+                        .WithMany()
+                        .HasForeignKey("AnswerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Owleet.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

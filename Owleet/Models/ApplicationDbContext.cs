@@ -13,7 +13,16 @@ namespace Owleet.Models
         {
             Database.EnsureCreated();
         }
-        public DbSet<ApplicationUser> Users { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<UserAnswer>()
+            .HasKey(u => new { u.UserId, u.AnswerId });
+        }
+        public DbSet<Answer> Answers { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Test> Tests { get; set; }
+        public DbSet<Tournament> Tournaments { get; set; }       
 
     }
 }
