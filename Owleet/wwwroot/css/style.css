@@ -1029,13 +1029,11 @@ textarea:-ms-input-placeholder {
 input {
   background: #eceff8;
   border: 2px solid #eceff8;
-  height: 45px;
   -webkit-box-shadow: none;
   box-shadow: none;
   padding-left: 10px;
   font-size: 14px;
-  color: #333;
-  width: 100%; }
+  color: #333;}
 
 select {
   width: 100%;
@@ -7246,11 +7244,9 @@ h3.cart-page-title {
     margin-bottom: 30px;
     padding: 0 15px; }
   .login-register-wrapper .login-form-container .login-register-form form input[type="checkbox"] {
-    height: 15px;
     margin: 0;
     position: relative;
-    top: 1px;
-    width: 17px; }
+    top: 1px; }
   .login-register-wrapper .login-form-container .login-register-form form .button-box .login-toggle-btn {
     padding: 10px 0 19px; }
     .login-register-wrapper .login-form-container .login-register-form form .button-box .login-toggle-btn label {
