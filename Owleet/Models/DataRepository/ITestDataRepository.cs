@@ -8,6 +8,7 @@ namespace Owleet.Models.DataRepository
     {
         Task<List<Test>> GetPassedTestsByUserId(Guid id);
         Task<List<Test>> GetAllTests();
+        Task<List<Test>> GetTestsByUserId(string id);
         Task<Test> GetTest(Guid id);
     }
 }

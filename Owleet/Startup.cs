@@ -48,12 +48,13 @@ namespace Owleet
             })
                 //.AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             // Регистрация фильтров проверки существования записей
             services.AddScoped<ValidateEntityExistsAttribute<Test>>();
             services.AddScoped<ValidateEntityExistsAttribute<Question>>();
             services.AddScoped<ValidateEntityExistsAttribute<Answer>>();
             services.AddScoped<ValidateEntityExistsAttribute<Tournament>>();
+            services.AddScoped<ValidateTestAuthorAttribute>();
             
             services.AddMvc(options => { 
                     // Регистрация фильтра валидации модели

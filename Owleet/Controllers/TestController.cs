@@ -25,7 +25,7 @@ namespace Owleet.Controllers
         // GET: Test
         public async Task<IActionResult> Index()
         {
-            return View(await db.GetAllTests());
+            return View(await db.GetTestsByUserId(GetCurrentUserAsync().Result.Id));
         }
 
         // GET: Test/Create
@@ -46,6 +46,7 @@ namespace Owleet.Controllers
 
         // GET: Test/Edit/5
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Test>))]
+        [ServiceFilter(typeof(ValidateTestAuthorAttribute))]
         public async Task<IActionResult> Edit(Guid? id)
         {
             return View(await db.GetTest(id.Value));
@@ -74,6 +75,7 @@ namespace Owleet.Controllers
 
         // GET: Test/Delete/5
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Test>))]
+        [ServiceFilter(typeof(ValidateTestAuthorAttribute))]
         public async Task<IActionResult> Delete(Guid? id)
         {
             return PartialView(await db.GetSingleAsync(x=>x.Id == id));
