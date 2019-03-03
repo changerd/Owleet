@@ -28,6 +28,11 @@ namespace Owleet.Models.DataRepository
         {
             return await context.Tests.ToListAsync();
         }
+        
+        public async Task<List<Test>> GetTestsByUserId(string userId)
+        {
+            return await context.Tests.Where(x=>x.UserId == userId.ToString()).ToListAsync();
+        }
 
         public async Task<Test> GetTest(Guid id)
         {

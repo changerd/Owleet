@@ -28,17 +28,17 @@ namespace Owleet.Controllers
         // GET: Test/Create
         public IActionResult Create(Guid testId)
         {
-            var question = new Question(testId);
+            var question = new Question {TestId = testId};
             return PartialView(question);
         }
         
         [HttpPost]
         [ValidateModel]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,TestId,Text")] Question question)
+        public async Task<IActionResult> Create([Bind("Id,Text,TestId")] Question question)
         {
             await db.AddAsync(question);
-            return PartialView(question);
+            return PartialView("Create", question);
         }
 
         // GET: Test/Edit/5

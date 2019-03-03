@@ -20,9 +20,9 @@ namespace Owleet.Controllers
         }
 
         // GET: Test/Create
-        public IActionResult Create(Question question)
+        public IActionResult Create(Guid questionId)
         {
-            var answer = new Answer(question.Id);
+            var answer = new Answer(){QuestionId = questionId};
             return PartialView(answer);
         }
         
