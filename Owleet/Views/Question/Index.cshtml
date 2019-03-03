@@ -1,16 +1,20 @@
-﻿@model IEnumerable<Owleet.Models.Question>
-@{
-    ViewData["Title"] = "Вопросы";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-<div id="modal-placeholder"></div>
+﻿@model Owleet.Models.Test
 
-<div class="row">
-    <div class="container-fluid my-2">
-        <h2 class="d-inline">Вопросы</h2>
-        <a href="#" class="d-inline float-right text-dark fas fa-plus-circle fa-2x" data-target="#modal-container" data-toggle="modal" data-url="@Url.Action("Create")"></a>       
-    </div>
-    <div class="container-fluid" id="partialTable">
-        @await Html.PartialAsync("_Table", Model)
-    </div>
+<div>Questions</div>
+<a href="#" class="btn btn-primary" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {controller = "Question", action = "Create", testId = Model.Id})">Add question</a> 
+<div>
+    @foreach (var question in Model.Questions)
+    {
+        <div>@Html.DisplayFor(modelItem => question.Text)</div>
+        <a href="#" class="btn btn-primary" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {controller = "Answer", action = "Create", questionId = question.Id})">Add answer</a>  
+        <a href="#" class="btn btn-primary" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {controller = "Question", action = "Edit", id = question.Id})">Edit question</a> 
+        <a href="#" class="btn btn-primary" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {controller = "Question", action = "Delete", id = question.Id})">Remove question</a> 
+        foreach (var answer in question.Answers)
+        {
+            <div>@Html.DisplayFor(modelItem => answer.Text)</div>
+            <div>@Html.DisplayFor(modelItem => answer.IsTrue)</div>
+            <a href="#" class="btn btn-primary" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {controller = "Answer", action = "Edit", id = answer.Id})">Edit answer</a> 
+            <a href="#" class="btn btn-primary" data-target="#modal-container" data-toggle="modal" data-url="@Url.RouteUrl(new {controller = "Answer", action = "Delete", id = answer.Id})">Remove answer</a> 
+        }
+    }
 </div>

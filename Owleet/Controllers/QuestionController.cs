@@ -20,9 +20,9 @@ namespace Owleet.Controllers
         }
 
         // GET: Test
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(Guid testId)
         {
-            return View(await db.GetAllAsync(x=>x.Answers));
+            return PartialView(await db.GetTest(testId));
         }
 
         // GET: Test/Create

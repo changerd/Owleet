@@ -7,7 +7,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Удалить вопрос?</h5>
+                <h5 class="modal-title">Delete question?</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -19,7 +19,7 @@
                 <form asp-action="Delete">
                     <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
                     <input type="hidden" asp-for="Id"/>
-                    <input type="submit" data-save="modal" data-delete="modal" class="btn btn-dark" value="Удалить"/>
+                    <input type="submit" data-delete="modal" class="btn btn-dark" value="Удалить"/>
                 </form>
             </div>
         </div>

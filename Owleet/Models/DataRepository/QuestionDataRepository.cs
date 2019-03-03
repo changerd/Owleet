@@ -22,5 +22,11 @@ namespace Owleet.Models.DataRepository
             context.Entry(question).State = EntityState.Deleted;
             await context.SaveChangesAsync();
         }
+
+        public async Task<Test> GetTest(Guid testId)
+        {
+            return await context.Tests.Include(x => x.Questions).ThenInclude(x => x.Answers)
+                .SingleOrDefaultAsync(x => x.Id == testId);
+        }
     }
 }

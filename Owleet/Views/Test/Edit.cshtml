@@ -1,7 +1,7 @@
 ﻿@model Owleet.Models.Test
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit test";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div id="modal-placeholder"></div>
@@ -12,10 +12,8 @@
         @await Html.PartialAsync("_Input", Model)
     </div>
 </div>
-<div>
-    <div class="col-md-12">
-        @await Html.PartialAsync("~/Views/Question/_Table.cshtml", Model)
-    </div>
+<div id="partial" data-url="@Url.RouteUrl(new {Controller = "Question",Action="Index", testId = Model?.Id})">
+    @await Html.PartialAsync("~/Views/Question/Index.cshtml", Model)
 </div>
 <div>
     <a asp-action="Index">Back to List</a>

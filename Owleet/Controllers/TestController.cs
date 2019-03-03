@@ -27,6 +27,11 @@ namespace Owleet.Controllers
         {
             return View(await db.GetTestsByUserId(GetCurrentUserAsync().Result.Id));
         }
+        [ServiceFilter(typeof(ValidateEntityExistsAttribute<Test>))]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            return PartialView("Details", await db.GetSingleAsync(x => x.Id == id));
+        }
 
         // GET: Test/Create
         public IActionResult Create()
@@ -41,7 +46,7 @@ namespace Owleet.Controllers
             
             test.UserId = GetCurrentUserAsync().Result.Id;
             await db.AddAsync(test);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Edit), new { id = test.Id});
         }
 
         // GET: Test/Edit/5
